@@ -13,7 +13,9 @@ public class DataContext : DbContext
         {
             m.HasKey(p => p.Id);
             m.HasMany(p => p.RefreshTokens)
-                .WithOne(r => r.Profile);
+                .WithOne(r => r.Profile)
+                .HasForeignKey(r => r.ProfileId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
