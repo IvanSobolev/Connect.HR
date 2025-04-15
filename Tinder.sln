@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinderAPI", "TinderAPI\TinderAPI.csproj", "{AD54A00E-3EF9-41CC-BCF0-849586039091}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileMicroservice", "ProfileMicroservice\ProfileMicroservice.csproj", "{AD54A00E-3EF9-41CC-BCF0-849586039091}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
