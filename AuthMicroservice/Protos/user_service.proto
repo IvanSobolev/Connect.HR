@@ -8,14 +8,12 @@ service CreateProfileService {
 
 message CreateProfileRequest {
   string id = 1;
-  string email = 2;
-  string first_name = 3;
-  string last_name = 4;
-  bool is_verified = 5;
-  bool is_male = 6;
-  string birthday = 7;
-  float latitude = 8;
-  float longitude = 9;
+  string first_name = 2;
+  string last_name = 3;
+  bool is_male = 4;
+  string birthday = 5;
+  float latitude = 6;
+  float longitude = 7;
 }
 
 message CreateProfileResponse {
