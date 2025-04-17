@@ -75,6 +75,6 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
         
         await _refreshTokenRepository.AddAsync(refreshToken, DateTime.UtcNow.AddDays(30), dbUser.Id);
         _logger.LogDebug("successful attempt to login an account with mail: {Email}", profile.Email);
-        return new TokensDto { AccessToken = accessToken, RefreshToken = refreshToken };
+        return new TokensDto(accessToken, refreshToken);
     }
 }
