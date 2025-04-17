@@ -5,5 +5,6 @@ namespace AuthMicroservice.Managers.Interfaces;
 
 public interface IProfileManager
 {
-    Task<(string RefreshToken, string AccessToken)> RegistrationAsync(RegistrationDto profile);
+    Task<TokensDto> RegistrationAsync(RegistrationDto profile);
+    Task<TokensDto> LoginAsync(LoginDto profile);
 }

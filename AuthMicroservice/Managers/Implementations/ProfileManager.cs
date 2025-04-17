@@ -1,37 +1,34 @@
 ﻿using AuthMicroservice.Managers.Interfaces;
-using AuthMicroservice.Models;
 using AuthMicroservice.Models.Dtos;
 using AuthMicroservice.Repositories.Interfaces;
 using AuthMicroservice.Services.Interfaces;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Identity;
 using TinderAPI;
 
 namespace AuthMicroservice.Managers.Implementations;
 
-public class ProfileManager ( IProfileRepository profileRepository, IRefreshTokenRepository refreshTokenRepository, ITokenGeneratorService tokenGenerator, ILogger logger) : IProfileManager
+public class ProfileManager ( IProfileRepository profileRepository, IRefreshTokenRepository refreshTokenRepository, 
+    ITokenGeneratorService tokenGenerator, IProfileMicroserviceClient profileMicroserviceClient, ILogger logger) : IProfileManager
 {
     private readonly IProfileRepository _profileRepository = profileRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
     private readonly ITokenGeneratorService _tokenGenerator = tokenGenerator;
-    private readonly PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+    private readonly IProfileMicroserviceClient _profileMicroserviceClient = profileMicroserviceClient;
     private readonly ILogger _logger = logger;
-    public async Task<(string RefreshToken, string AccessToken)> RegistrationAsync(RegistrationDto profile)
-    {
+    private readonly PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
+    public async Task<TokensDto> RegistrationAsync(RegistrationDto profile)
+    {   
         if (await _profileRepository.ExistsByEmailAsync(profile.Email))
         {
             _logger.LogWarning("Registration attempt with existing email: {Email}", profile.Email);
-            return new ValueTuple<string, string>("", "");
+            return new TokensDto();
         }
 
         Guid userId = Guid.NewGuid();
 
         string passwordHash = _passwordHasher.HashPassword(userId.ToString(), profile.Password);
         
-        using var channel = GrpcChannel.ForAddress("http://localhost:5001");
-        var client = new CreateProfileService.CreateProfileServiceClient(channel);
-
-        var reply = await client.CreateProfileAsync(new CreateProfileRequest
+        var reply = await _profileMicroserviceClient.CreateProfileAsync(new CreateProfileRequest
         {
             Id = userId.ToString(),
             FirstName = profile.FirstName,
@@ -44,8 +41,8 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
 
         if (!reply.Success)
         {
-            _logger.LogError(reply.ErrorMessage);
-            return new ValueTuple<string, string>("", "");
+            _logger.LogError("Profile service error: " +  reply.ErrorMessage);
+            return new TokensDto();
         }
 
         string refreshToken = await _tokenGenerator.GenerateTokenAsync(userId, DateTime.UtcNow.AddDays(30));
@@ -54,6 +51,30 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
         await _profileRepository.AddAsync(userId, profile.Email, passwordHash);
         await _refreshTokenRepository.AddAsync(refreshToken, DateTime.UtcNow.AddDays(30), userId);
         
-        return new ValueTuple<string, string>(refreshToken, accessToken);
+        _logger.LogDebug("Sucess attempt registration with email: {Email}", profile.Email);
+        return new TokensDto(accessToken, refreshToken);
+    }
+
+    public async Task<TokensDto> LoginAsync(LoginDto profile)
+    {
+        var dbUser = await _profileRepository.GetByEmailAsync(profile.Email);
+        if (dbUser == null)
+        {
+            _logger.LogWarning("Login attempt with not existing email: {Email}", profile.Email);
+            return new TokensDto();
+        }
+        string passwordHash = _passwordHasher.HashPassword(dbUser.Id.ToString(), profile.Password);
+        if (dbUser.PasswordHash != passwordHash)
+        {
+            _logger.LogWarning("Login attempt with wrong password to email: {Email}", profile.Email);
+            return new TokensDto();
+        }
+        
+        string refreshToken = await _tokenGenerator.GenerateTokenAsync(dbUser.Id, DateTime.UtcNow.AddDays(30));
+        string accessToken = await _tokenGenerator.GenerateTokenAsync(dbUser.Id, DateTime.UtcNow.AddMinutes(15));
+        
+        await _refreshTokenRepository.AddAsync(refreshToken, DateTime.UtcNow.AddDays(30), dbUser.Id);
+        _logger.LogDebug("successful attempt to login an account with mail: {Email}", profile.Email);
+        return new TokensDto { AccessToken = accessToken, RefreshToken = refreshToken };
     }
 }
