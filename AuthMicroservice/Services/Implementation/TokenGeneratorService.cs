@@ -6,9 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace AuthMicroservice.Services.Implementation;
 
-public class TokenGeneratorService(IConfiguration configuration, ILogger logger) : ITokenGeneratorService
+public class TokenGeneratorService(IConfiguration configuration, ILogger<TokenGeneratorService> logger) : ITokenGeneratorService
 {
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<TokenGeneratorService> _logger = logger;
     private readonly IConfiguration _configuration = configuration;
     public Task<string> GenerateTokenAsync(Guid userId, DateTime expiresAt)
     {
