@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthMicroservice.Controllers;
 
+[ApiController]
 [Route("auth/profile")]
 public class ProfileController (IProfileManager profileManager) : ControllerBase
 {
