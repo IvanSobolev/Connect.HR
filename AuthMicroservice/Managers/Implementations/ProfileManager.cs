@@ -21,7 +21,7 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
         if (await _profileRepository.ExistsByEmailAsync(profile.Email))
         {
             _logger.LogWarning("Registration attempt with existing email: {Email}", profile.Email);
-            return new TokensDto();
+            return new TokensDto("There is already a user with this email");
         }
 
         Guid userId = Guid.NewGuid();
@@ -42,7 +42,7 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
         if (!reply.Success)
         {
             _logger.LogError("Profile service error: " +  reply.ErrorMessage);
-            return new TokensDto();
+            return new TokensDto("Error connecting to profile service");
         }
 
         string refreshToken = await _tokenGenerator.GenerateTokenAsync(userId, DateTime.UtcNow.AddDays(30));

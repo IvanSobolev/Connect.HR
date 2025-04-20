@@ -16,13 +16,13 @@ public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository
         var token = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
         if (token == null)
         {
-            _logger.LogWarning("Token not found");
+            _logger.LogWarning("Token not found for Refresh tokens");
             return new TokensDto();
         }
         await _refreshTokenRepository.DeleteAsync(refreshToken);
         if (token.ExpiresAt > DateTime.UtcNow)
         {
-            _logger.LogDebug("Token is expires");
+            _logger.LogDebug("Token is expires for Refresh tokens");
             return new TokensDto();
         }
         
@@ -42,13 +42,13 @@ public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository
         var token = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
         if (token == null)
         {
-            _logger.LogWarning("Token not found");
+            _logger.LogWarning("Token not found for logout all tokens");
             return;
         }
         await _refreshTokenRepository.DeleteAsync(refreshToken);
         if (token.ExpiresAt > DateTime.UtcNow)
         {
-            _logger.LogDebug("Token is expires");
+            _logger.LogDebug("Token is expires for logout all tokens");
             return;
         }
 
