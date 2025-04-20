@@ -8,13 +8,13 @@ using TinderAPI;
 namespace AuthMicroservice.Managers.Implementations;
 
 public class ProfileManager ( IProfileRepository profileRepository, IRefreshTokenRepository refreshTokenRepository, 
-    ITokenGeneratorService tokenGenerator, IProfileMicroserviceClient profileMicroserviceClient, ILogger logger) : IProfileManager
+    ITokenGeneratorService tokenGenerator, IProfileMicroserviceClient profileMicroserviceClient, ILogger<ProfileManager> logger) : IProfileManager
 {
     private readonly IProfileRepository _profileRepository = profileRepository;
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
     private readonly ITokenGeneratorService _tokenGenerator = tokenGenerator;
     private readonly IProfileMicroserviceClient _profileMicroserviceClient = profileMicroserviceClient;
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<ProfileManager> _logger = logger;
     private readonly PasswordHasher<string> _passwordHasher = new PasswordHasher<string>();
     public async Task<TokensDto> RegistrationAsync(RegistrationDto profile)
     {   

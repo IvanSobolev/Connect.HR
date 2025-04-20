@@ -5,11 +5,11 @@ using AuthMicroservice.Services.Interfaces;
 
 namespace AuthMicroservice.Managers.Implementations;
 
-public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository, ITokenGeneratorService tokenGenerator, ILogger logger) : IRefreshTokenManager
+public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository, ITokenGeneratorService tokenGenerator, ILogger<RefreshTokenManager> logger) : IRefreshTokenManager
 {
     private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
     private readonly ITokenGeneratorService _tokenGenerator = tokenGenerator;
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<RefreshTokenManager> _logger = logger;
     
     public async Task<TokensDto> RefreshTokensAsync(string refreshToken)
     {

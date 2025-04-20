@@ -8,18 +8,15 @@ namespace AuthMicroservice.Services.Implementation;
 
 public class ProfileMicroserviceClient : IProfileMicroserviceClient
 {
-    private readonly ILogger _logger;
+    private readonly ILogger<ProfileMicroserviceClient> _logger;
     private readonly GrpcChannel _channel;
     private readonly CreateProfileService.CreateProfileServiceClient _client;
-    private readonly RetryPolicy _retryPolicy;
     
     public ProfileMicroserviceClient(
         IConfiguration configuration,
-        ILogger logger,
-        RetryPolicy retryPolicy)
+        ILogger<ProfileMicroserviceClient> logger)
     {
         _logger = logger;
-        _retryPolicy = retryPolicy;
         
         var grpcAddress = configuration["ProfileMicroservice:GrpcAddress"];
         _channel = GrpcChannel.ForAddress(grpcAddress, new GrpcChannelOptions
