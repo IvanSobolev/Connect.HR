@@ -16,16 +16,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="022fc7d3-91aa-4eb1-baae-044bea79d6b9" name="Changes" comment="feat: token controller">
-      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AuthMicroservice/Dockerfile" afterDir="false" />
+    <list default="true" id="022fc7d3-91aa-4eb1-baae-044bea79d6b9" name="Changes" comment="feat: docker and DI to Program.cs v2">
+      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AuthMicroservice/Models/Dtos/AuthOptions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AuthMicroservice/Models/Dtos/GrpcOptions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Tinder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Tinder/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthMicroservice/AuthMicroservice.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/AuthMicroservice.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthMicroservice/Managers/Implementations/ProfileManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Managers/Implementations/ProfileManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthMicroservice/Managers/Implementations/RefreshTokenManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Managers/Implementations/RefreshTokenManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthMicroservice/Models/DataContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Models/DataContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuthMicroservice/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AuthMicroservice/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AuthMicroservice/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Properties/launchSettings.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AuthMicroservice/Services/Implementation/ProfileMicroserviceClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Services/Implementation/ProfileMicroserviceClient.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AuthMicroservice/Services/Implementation/TokenGeneratorService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/Services/Implementation/TokenGeneratorService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AuthMicroservice/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/AuthMicroservice/appsettings.json" afterDir="false" />
@@ -58,15 +55,11 @@
   }
 }</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f756609c93104d12b4c2d24605eb00101a6920/31/be79a393/SocketsHttpHandler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/81cc2099363ff84f1614136d278beb5bed411454404ec1ec16856d72b0d434e9/LoggerExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b5772298e59ae9882b89d2218e11e731ae8317b914ff7a5989867fd75ae62252/ILogger.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d440fee17b55670b31cb7f75832482ba440129beb3b7a3c1a818379961fdeac/RetryPolicy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/.development/pet/Tinder/AuthMicroservice/Controllers/ProfileController.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/.development/pet/Tinder/AuthMicroservice/Managers/Implementations/ProfileManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/.development/pet/Tinder/AuthMicroservice/Managers/Implementations/RefreshTokenManager.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/.development/pet/Tinder/AuthMicroservice/Models/Dtos/TokensDto.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/AuthMicroservice/Program.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock://D:/.development/pet/Tinder/ProfileMicroservice/Models/Entitys/Profile.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://D:/.development/pet/Tinder/ProfileMicroservice/Models/Entitys/Profile.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -83,37 +76,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.AuthMicroservice: IIS Express.executor": "Run",
-    ".NET Launch Settings Profile.AuthMicroservice: http.executor": "Debug",
-    "Docker.AuthMicroservice/Dockerfile.executor": "Run",
-    "Docker.docker-compose.yml.auth-service: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.auth_db: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.auth_service: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml.postgres: Compose Deployment.executor": "Run",
-    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feat/authMicroservice",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.AuthMicroservice: IIS Express.executor&quot;: &quot;Run&quot;,
+    &quot;.NET Launch Settings Profile.AuthMicroservice: http.executor&quot;: &quot;Debug&quot;,
+    &quot;Docker.AuthMicroservice/Dockerfile.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.auth-service: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.auth_db: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.auth_service: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.postgres: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/authMicroservice&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "PLAIN_TEXT"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;PLAIN_TEXT&quot;
     ],
-    "rider.external.source.directories": [
-      "C:\\Users\\bezli\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
-      "C:\\Users\\bezli\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
-      "C:\\Users\\bezli\\AppData\\Local\\Symbols\\src"
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\bezli\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\bezli\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\bezli\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+}</component>
+  <component name="RunManager" selected="Docker.docker-compose.yml.auth_service: Compose Deployment">
     <configuration name="AuthMicroservice" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/AuthMicroservice/AuthMicroservice.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net8.0" />
@@ -321,8 +314,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Docker.docker-compose.yml.auth_db: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.auth_service: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.auth_db: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.auth-service: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.postgres: Compose Deployment" />
       </list>
@@ -420,7 +413,8 @@
       <workItem from="1744817663974" duration="2001000" />
       <workItem from="1744879186304" duration="2860000" />
       <workItem from="1745138681282" duration="9072000" />
-      <workItem from="1745175641447" duration="10363000" />
+      <workItem from="1745175641447" duration="10669000" />
+      <workItem from="1745246293911" duration="9070000" />
     </task>
     <task id="LOCAL-00011" summary="fix: registration logic">
       <option name="closed" value="true" />
@@ -478,7 +472,23 @@
       <option name="project" value="LOCAL" />
       <updated>1745141582364</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat: docker and DI to Program.cs">
+      <option name="closed" value="true" />
+      <created>1745186937966</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1745186937966</updated>
+    </task>
+    <task id="LOCAL-00019" summary="feat: docker and DI to Program.cs v2">
+      <option name="closed" value="true" />
+      <created>1745186955859</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1745186955859</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,6 +513,8 @@
     <MESSAGE value="feat: refresh token manager logic" />
     <MESSAGE value="feat: profile controller" />
     <MESSAGE value="feat: token controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: token controller" />
+    <MESSAGE value="feat: docker and DI to Program.cs" />
+    <MESSAGE value="feat: docker and DI to Program.cs v2" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: docker and DI to Program.cs v2" />
   </component>
 </project>
