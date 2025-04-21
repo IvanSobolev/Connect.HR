@@ -1,4 +1,5 @@
-﻿using AuthMicroservice.Services.Interfaces;
+﻿using AuthMicroservice.Models.Dtos;
+using AuthMicroservice.Services.Interfaces;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Grpc.Net.Client.Configuration;
@@ -13,12 +14,12 @@ public class ProfileMicroserviceClient : IProfileMicroserviceClient
     private readonly CreateProfileService.CreateProfileServiceClient _client;
     
     public ProfileMicroserviceClient(
-        IConfiguration configuration,
+        GrpcOptions grpcOptions,
         ILogger<ProfileMicroserviceClient> logger)
     {
         _logger = logger;
         
-        var grpcAddress = configuration["ProfileMicroservice:GrpcAddress"];
+        var grpcAddress = grpcOptions.Address;
         _channel = GrpcChannel.ForAddress(grpcAddress, new GrpcChannelOptions
         {
             HttpHandler = new SocketsHttpHandler

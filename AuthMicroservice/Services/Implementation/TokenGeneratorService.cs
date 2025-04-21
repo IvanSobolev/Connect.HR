@@ -1,15 +1,16 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthMicroservice.Models.Dtos;
 using AuthMicroservice.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AuthMicroservice.Services.Implementation;
 
-public class TokenGeneratorService(IConfiguration configuration, ILogger<TokenGeneratorService> logger) : ITokenGeneratorService
+public class TokenGeneratorService(AuthOptions authOptions, ILogger<TokenGeneratorService> logger) : ITokenGeneratorService
 {
     private readonly ILogger<TokenGeneratorService> _logger = logger;
-    private readonly IConfiguration _configuration = configuration;
+    private readonly AuthOptions _configuration = authOptions;
     public Task<string> GenerateTokenAsync(Guid userId, DateTime expiresAt)
     {
         var claims = new List<Claim>
@@ -18,11 +19,12 @@ public class TokenGeneratorService(IConfiguration configuration, ILogger<TokenGe
         };
         
         var jwt = new JwtSecurityToken(
-            issuer: _configuration.GetValue<string>("AuthOptions:issuer"),
-            audience: _configuration.GetValue<string>("AuthOptions:audience"),
-            claims: claims,
-            expires: expiresAt,
-            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("AuthOptions:key") ?? string.Empty)), SecurityAlgorithms.HmacSha256));
+                issuer: authOptions.Issuer,
+                audience: authOptions.Audience,
+                claims: claims,
+                expires: expiresAt,
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authOptions.Key)), SecurityAlgorithms.HmacSha256)
+            );
             
         _logger.LogDebug($"successful token generation for {userId}");
         return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(jwt));

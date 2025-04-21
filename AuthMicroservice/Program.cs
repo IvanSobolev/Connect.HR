@@ -2,10 +2,12 @@ using System.Text;
 using AuthMicroservice.Managers.Implementations;
 using AuthMicroservice.Managers.Interfaces;
 using AuthMicroservice.Models;
+using AuthMicroservice.Models.Dtos;
 using AuthMicroservice.Repositories.Implementations;
 using AuthMicroservice.Repositories.Interfaces;
 using AuthMicroservice.Services.Implementation;
 using AuthMicroservice.Services.Interfaces;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,16 +25,24 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddDebug();
 });
 
-var connectionString = builder.Configuration.GetValue<string>("DB_CONNECTION_STRING") ?? throw new InvalidOperationException("DB_CONNECTION_STRING is not set");
+AuthOptions authOptions = new AuthOptions(Environment.GetEnvironmentVariable("AUTH_OPTIONS") ??
+                                          throw new InvalidOperationException(
+                                              "AuthOptions: authOptions is not configured"));
+GrpcOptions grpcOptions = new GrpcOptions(Environment.GetEnvironmentVariable("GRPC_ADDRESS") ??
+                                          throw new InvalidOperationException(
+                                              "GrpcOptions: grpcOptions is not configured"));
 
 builder.Services.AddDbContext<DataContext>(options => 
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")));
+
+builder.Services.AddSingleton(authOptions);
+builder.Services.AddSingleton(grpcOptions);
 
 builder.Services.AddScoped<IProfileRepository, EfCoreProfileRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, EfCoreRefreshTokenRepository>();
 
-builder.Services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
 builder.Services.AddScoped<IProfileMicroserviceClient, ProfileMicroserviceClient>();
+builder.Services.AddScoped<ITokenGeneratorService, TokenGeneratorService>();
 
 builder.Services.AddScoped<IProfileManager, ProfileManager>();
 builder.Services.AddScoped<IRefreshTokenManager, RefreshTokenManager>();
@@ -43,12 +53,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["AuthOptions:issuer"],
+            ValidIssuer = authOptions.Issuer,
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["AuthOptions:audience"],
+            ValidAudience = authOptions.Audience,
             ValidateLifetime = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["AuthOptions:key"] ?? throw new InvalidOperationException("AuthOptions:key is not configured"))),
+                Encoding.UTF8.GetBytes(authOptions.Key)),
             ValidateIssuerSigningKey = true,
         };
     });
@@ -74,10 +84,8 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    await dbContext.Database.MigrateAsync();
+    dbContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
-
-
 app.Run();
