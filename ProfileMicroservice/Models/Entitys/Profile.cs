@@ -8,11 +8,8 @@ public class Profile
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [EmailAddress]
-    public string Email { get; set; }
-    public string PasswordHash { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastActive { get; set; } = DateTime.UtcNow;
-    public bool IsVerified { get; set; }
     public bool IsMale { get; set; }
     public DateOnly BirthdayDate { get; set; }
     [MaxLength(500)]

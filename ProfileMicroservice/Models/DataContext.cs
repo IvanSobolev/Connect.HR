@@ -15,7 +15,6 @@ public class DataContext : DbContext
         modelBuilder.Entity<Profile>(m =>
         {
             m.HasKey(p => p.Id);
-            m.HasIndex(p => p.Email).IsUnique();
             m.HasIndex(p => new { Latitube = p.Latitude, Longtube = p.Longitude});
             m.HasIndex(p => new { p.BirthdayDate, p.IsMale });
             m.HasMany(p => p.Hobbies)
