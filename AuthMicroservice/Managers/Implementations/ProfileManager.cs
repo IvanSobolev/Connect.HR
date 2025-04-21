@@ -63,8 +63,10 @@ public class ProfileManager ( IProfileRepository profileRepository, IRefreshToke
             _logger.LogWarning("Login attempt with not existing email: {Email}", profile.Email);
             return new TokensDto();
         }
-        string passwordHash = _passwordHasher.HashPassword(dbUser.Id.ToString(), profile.Password);
-        if (dbUser.PasswordHash != passwordHash)
+
+        var result = _passwordHasher.VerifyHashedPassword(dbUser.Id.ToString(), dbUser.PasswordHash, profile.Password);
+        
+        if (result == PasswordVerificationResult.Failed)
         {
             _logger.LogWarning("Login attempt with wrong password to email: {Email}", profile.Email);
             return new TokensDto();
