@@ -2,7 +2,7 @@
 
 namespace TinderAPI.Services.Implementations;
 
-public class UserGrpcService : CreateProfileService.CreateProfileServiceBase
+public class ProfileGrpcService : CreateProfileService.CreateProfileServiceBase
 {
     public async override Task<CreateProfileResponse> CreateProfile(CreateProfileRequest request, ServerCallContext context)
     {
