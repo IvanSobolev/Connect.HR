@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>TinderAPI</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +26,12 @@
 
     <ItemGroup>
       <Folder Include="Services\Interfaces\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
