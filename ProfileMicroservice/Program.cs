@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment())
 
 
 
-app.MapGrpcService<UserGrpcService>();
+app.MapGrpcService<ProfileGrpcService>();
 app.MapControllers();
 
 app.UseHttpsRedirection();
