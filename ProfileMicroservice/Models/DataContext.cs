@@ -46,7 +46,6 @@ public class DataContext : DbContext
             m.HasOne(p => p.Profile)
                 .WithMany(p => p.Photos)
                 .HasForeignKey(p => p.ProfileId);
-            m.HasIndex(p => new { p.ProfileId, p.SortOrder }).IsUnique();
         });
     }
 }

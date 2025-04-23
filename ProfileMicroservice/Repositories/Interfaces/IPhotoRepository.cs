@@ -5,9 +5,9 @@ namespace TinderAPI.Repositories.Interfaces;
 
 public interface IPhotoRepository
 {
-    Task AddNewPhotoAsync(Guid id, string url, int? position = null);
-    Task<PhotoDto> GetByIdAsync(long id);
+    Task AddNewPhotoAsync(Guid id, string url);
+    Task<PhotoDto?> GetByIdAsync(long id);
     Task<ICollection<PhotoDto>> GetUsersPhotoAsync(Guid userId);
-    Task UpdateAsync(long id, string? url = null, int? position = null);
-    Task DeleteAsync(long id);
+    Task<bool> UpdateAsync(long id, string? url = null, bool isMain = false);
+    Task<bool> DeleteAsync(long id);
 }
