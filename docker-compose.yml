@@ -18,13 +18,13 @@ services:
       retries: 5
   
   profile_db:
-    image: postgres
+    image: postgis/postgis
     environment:
       - POSTGRES_USER=${DB_PROFILE_USER}
       - POSTGRES_PASSWORD=${DB_PROFILE_PASSWORD}
       - POSTGRES_DB=${DB_PROFILE_DB}
     volumes:
-      - profile_db_data::/var/lib/postgresql/data
+      - profile_db_data:/var/lib/postgresql/data
     ports:
       - "${DB_PROFILE_PORT}:5432"
     healthcheck:
@@ -54,6 +54,10 @@ services:
     build:
       context: .
       dockerfile: ProfileMicroservice/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Host=${DB_PROFILE_HOST};Port=5432;Database=${DB_PROFILE_DB};Username=${DB_PROFILE_USER};Password=${DB_PROFILE_PASSWORD}
+      - AUTH_OPTIONS=Secret=${JWT_SECRET};Issuer=${AUTH_ISSUER};Audience=${AUTH_AUDIENCE}
     ports:
       - "${PROFILE_SERVICE_OPEN_PORT}:8080"
       - "${PROFILE_SERVICE_OPEN_GRPC_PORT}:8081"
