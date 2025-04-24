@@ -13,6 +13,7 @@ public class EfCoreProfileRepository(DataContext dataContext) : IProfileReposito
     public async Task AddAsync(Profile profile)
     {
         await _dataContext.AddAsync(profile);
+        await _dataContext.SaveChangesAsync();
     }
 
     public async Task<ProfileDto?> GetByIdAsync(Guid id)

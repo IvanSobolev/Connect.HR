@@ -21,6 +21,7 @@ public class ProfileGrpcService (IProfileRepository profileRepository) : CreateP
             Latitude = request.Latitude,
             Longitude = request.Longitude
         });
+        Console.WriteLine("GRPC MESSAGE");
         return new CreateProfileResponse { Success = true, ProfileId = request.Id, ErrorMessage = String.Empty };
     }
 }
