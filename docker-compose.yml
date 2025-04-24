@@ -1,6 +1,12 @@
 ﻿version: '3.9'
 
 services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
   auth_db:
     image: postgres
     environment:
@@ -15,7 +21,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U $DB_AUTH_USER -d $DB_AUTH_DB"]
       interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 5 
   
   profile_db:
     image: postgis/postgis

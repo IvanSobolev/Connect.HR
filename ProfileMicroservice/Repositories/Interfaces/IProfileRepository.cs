@@ -12,7 +12,8 @@ public interface IProfileRepository
         string? lastName = null, 
         string? description = null, 
         float? latitude = null, 
-        float? longitude = null);
+        float? longitude = null,
+        List<int>? hobbiesId = null);
     Task<bool> DeleteAsync(Guid id);
     Task<bool> ExistAsync(Guid id);
 }

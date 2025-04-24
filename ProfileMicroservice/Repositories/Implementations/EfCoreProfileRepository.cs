@@ -47,30 +47,55 @@ public class EfCoreProfileRepository(DataContext dataContext) : IProfileReposito
     }
 
     public async Task<bool> UpdateAsync(Guid id, string? firstName = null, string? lastName = null, string? description = null,
-        float? latitude = null, float? longitude = null)
+    float? latitude = null, float? longitude = null, List<int>? hobbiesId = null)
+{
+    var profile = await _dataContext.Profiles
+        .Include(p => p.Hobbies)
+        .FirstOrDefaultAsync(p => p.Id == id);
+
+    if (profile == null)
     {
-        var profile = await _dataContext.Profiles.FirstOrDefaultAsync(p => p.Id == id);
-    
-        if (profile == null)
-        {
-            return false;
-        }
-
-        if (firstName != null) profile.FirstName = firstName;
-        if (lastName != null) profile.LastName = lastName;
-        if (description != null) profile.Description = description;
-    
-        if (latitude.HasValue && longitude.HasValue)
-        {
-            profile.Latitude= latitude.Value;
-            profile.Longitude = longitude.Value;
-            profile.LastActive = DateTime.UtcNow;
-        }
-
-        _dataContext.Profiles.Update(profile);
-        await _dataContext.SaveChangesAsync();
-        return true;
+        return false;
     }
+
+    if (firstName != null) profile.FirstName = firstName;
+    if (lastName != null) profile.LastName = lastName;
+    if (description != null) profile.Description = description;
+
+    if (latitude.HasValue && longitude.HasValue)
+    {
+        profile.Latitude = latitude.Value;
+        profile.Longitude = longitude.Value;
+        profile.LastActive = DateTime.UtcNow;
+    }
+
+    if (hobbiesId != null)
+    {
+        var existingHobbyIds = profile.Hobbies.Select(h => h.Id).ToList();
+        var hobbiesToAddIds = hobbiesId.Except(existingHobbyIds).ToList();
+        var hobbiesToRemove = profile.Hobbies.Where(h => !hobbiesId.Contains(h.Id)).ToList();
+
+        if (hobbiesToAddIds.Any())
+        {
+            var hobbiesToAdd = await _dataContext.Hobbies
+                .Where(h => hobbiesToAddIds.Contains(h.Id))
+                .ToListAsync();
+
+            foreach (var hobby in hobbiesToAdd)
+            {
+                profile.Hobbies.Add(hobby);
+            }
+        }
+
+        foreach (var hobby in hobbiesToRemove)
+        {
+            profile.Hobbies.Remove(hobby);
+        }
+    }
+
+    await _dataContext.SaveChangesAsync();
+    return true;
+}
 
     public async Task<bool> DeleteAsync(Guid id)
     {

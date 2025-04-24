@@ -37,7 +37,7 @@ public class EfCorePhotoRepository(DataContext dataContext) : IPhotoRepository
             }).FirstOrDefaultAsync();
     }
 
-    public async Task<ICollection<PhotoDto>> GetUsersPhotoAsync(Guid userId)
+    public async Task<ICollection<PhotoDto>> GetUserPhotoAsync(Guid userId)
     {
         return await _dataContext.Photos
             .Where(p => p.ProfileId == userId)
