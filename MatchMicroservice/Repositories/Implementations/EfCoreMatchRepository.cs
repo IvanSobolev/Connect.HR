@@ -9,7 +9,7 @@ public class EfCoreMatchRepository(DataContext dataContext) : IMatchRepository
 {
     private readonly DataContext _dataContext = dataContext;
     
-    public async Task<Match> UpsertMatch(Guid userId1, Guid userId2, bool? decision1, bool? decision2)
+    public async Task<Swipe> UpsertSwipeAsync(Guid userId1, Guid userId2, bool? decision1, bool? decision2)
     {
         var sql = @"
 INSERT INTO ""Matches"" (
@@ -29,5 +29,29 @@ RETURNING *;";
             .FromSqlRaw(sql, userId1, userId2, decision1, decision2)
             .AsNoTracking()
             .FirstAsync();
+    }
+
+    public async Task<ICollection<Swipe>> GetMatchAsync(Guid userId, int page, int pageSize)
+    {
+        if (page > 0 && pageSize > 0)
+        {
+            return new List<Swipe>();
+        }
+        var queryable = _dataContext.Matches.AsQueryable();
+        queryable = queryable.Where(s => (s.UserId1 == userId || s.UserId2 == userId) && s.DecisionId1 == true && s.DecisionId2 == true);
+        queryable = queryable.Skip(pageSize * page).Take(pageSize);
+        return await queryable.ToListAsync();
+    }
+    
+    public async Task<ICollection<Swipe>> GetByIdAsync(Guid userId, int page, int pageSize)
+    {
+        if (page > 0 && pageSize > 0)
+        {
+            return new List<Swipe>();
+        }
+        var queryable = _dataContext.Matches.AsQueryable();
+        queryable = queryable.Where(s => s.UserId1 == userId || s.UserId2 == userId);
+        queryable = queryable.Skip(pageSize * page).Take(pageSize);
+        return await queryable.ToListAsync();
     }
 }
