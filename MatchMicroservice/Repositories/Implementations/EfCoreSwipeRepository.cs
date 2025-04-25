@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MatchMicroservice.Repositories.Implementations;
 
-public class EfCoreMatchRepository(DataContext dataContext) : IMatchRepository
+public class EfCoreSwipeRepository(DataContext dataContext) : ISwipeRepository
 {
     private readonly DataContext _dataContext = dataContext;
     
@@ -43,7 +43,7 @@ RETURNING *;";
         return await queryable.ToListAsync();
     }
     
-    public async Task<ICollection<Swipe>> GetByIdAsync(Guid userId, int page, int pageSize)
+    public async Task<ICollection<Swipe>> GetByUserIdAsync(Guid userId, int page, int pageSize)
     {
         if (page > 0 && pageSize > 0)
         {
