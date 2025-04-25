@@ -5,10 +5,10 @@ namespace MatchMicroservice.Models;
 
 public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-    public DbSet<Match> Matches { get; set; }
+    public DbSet<Swipe> Matches { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Match>().HasKey(m => new { m.UserId1, m.UserId2 });
+        modelBuilder.Entity<Swipe>().HasKey(m => new { m.UserId1, m.UserId2 }); 
     }
 }

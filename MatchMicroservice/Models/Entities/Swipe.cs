@@ -1,6 +1,6 @@
 ﻿namespace MatchMicroservice.Models.Entities;
 
-public class Match
+public class Swipe
 {
     public Guid UserId1 { get; set; }
     public Guid UserId2 { get; set; }
