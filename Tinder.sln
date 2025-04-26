@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.env.example = .env.example
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMicroservice", "MatchMicroservice\MatchMicroservice.csproj", "{3660C5B8-6500-4B45-A458-C56114C2E4E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMicroservice", "MatchMicroservice\MatchMicroservice.csproj", "{263EBF9B-9D07-463B-838F-F48797C8BCA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +27,9 @@ Global
 		{8C4CDFB5-DCE8-425A-A90A-54F17A4990A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C4CDFB5-DCE8-425A-A90A-54F17A4990A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C4CDFB5-DCE8-425A-A90A-54F17A4990A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3660C5B8-6500-4B45-A458-C56114C2E4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3660C5B8-6500-4B45-A458-C56114C2E4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3660C5B8-6500-4B45-A458-C56114C2E4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3660C5B8-6500-4B45-A458-C56114C2E4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{263EBF9B-9D07-463B-838F-F48797C8BCA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{263EBF9B-9D07-463B-838F-F48797C8BCA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{263EBF9B-9D07-463B-838F-F48797C8BCA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{263EBF9B-9D07-463B-838F-F48797C8BCA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
