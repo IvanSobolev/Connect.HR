@@ -1,6 +1,12 @@
 ﻿version: '3.9'
 
 services:
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
   auth_db:
     image: postgres
     environment:
@@ -15,8 +21,40 @@ services:
       test: ["CMD-SHELL", "pg_isready -U $DB_AUTH_USER -d $DB_AUTH_DB"]
       interval: 5s
       timeout: 5s
+      retries: 5 
+  
+  profile_db:
+    image: postgis/postgis
+    environment:
+      - POSTGRES_USER=${DB_PROFILE_USER}
+      - POSTGRES_PASSWORD=${DB_PROFILE_PASSWORD}
+      - POSTGRES_DB=${DB_PROFILE_DB}
+    volumes:
+      - profile_db_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PROFILE_PORT}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $DB_PROFILE_USER -d $DB_PROFILE_DB" ]
+      interval: 5s
+      timeout: 5s
       retries: 5
-    
+      
+  swipe_db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${DB_SWIPE_USER}
+      - POSTGRES_PASSWORD=${DB_SWIPE_PASSWORD}
+      - POSTGRES_DB=${DB_SWIPE_DB}
+    volumes:
+      - swipe_db_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_SWIPE_PORT}:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $DB_SWIPE_USER -d $DB_SWIPE_DB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  
   auth_service:
     build:
         context: .
@@ -25,12 +63,45 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - DB_CONNECTION_STRING=Host=${DB_AUTH_HOST};Port=5432;Database=${DB_AUTH_DB};Username=${DB_AUTH_USER};Password=${DB_AUTH_PASSWORD}
       - AUTH_OPTIONS=Secret=${JWT_SECRET};Issuer=${AUTH_ISSUER};Audience=${AUTH_AUDIENCE}
-      - GRPC_ADDRESS=${PROFILE_SERVICE_URL}
+      - GRPC_ADDRESS=http://${PROFILE_SERVICE_HOST}:8081
     ports:
       - "${AUTH_SERVICE_OPEN_PORT}:8080"
     depends_on:
       auth_db:
         condition: service_healthy
+      profile_service:
+        condition: service_started
+        
+  profile_service:
+    build:
+      context: .
+      dockerfile: ProfileMicroservice/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Host=${DB_PROFILE_HOST};Port=5432;Database=${DB_PROFILE_DB};Username=${DB_PROFILE_USER};Password=${DB_PROFILE_PASSWORD}
+      - AUTH_OPTIONS=Secret=${JWT_SECRET};Issuer=${AUTH_ISSUER};Audience=${AUTH_AUDIENCE}
+    ports:
+      - "${PROFILE_SERVICE_OPEN_PORT}:8080"
+      - "${PROFILE_SERVICE_OPEN_GRPC_PORT}:8081"
+    depends_on:
+      profile_db:
+        condition: service_healthy
+        
+  match_service:
+    build:
+      context: .
+      dockerfile: MatchMicroservice/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Host=${DB_SWIPE_HOST};Port=5432;Database=${DB_SWIPE_DB};Username=${DB_SWIPE_USER};Password=${DB_SWIPE_PASSWORD}
+      - AUTH_OPTIONS=Secret=${JWT_SECRET};Issuer=${AUTH_ISSUER};Audience=${AUTH_AUDIENCE}
+    ports:
+      - "${MATCH_SERVICE_OPEN_PORT}:8080"
+    depends_on:
+      swipe_db:
+        condition: service_healthy
       
 volumes:
   auth_db_data:
+  profile_db_data:
+  swipe_db_data:

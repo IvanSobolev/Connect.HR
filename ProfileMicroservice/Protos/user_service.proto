@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "TinderAPI";
+
+service CreateProfileService {
+  rpc CreateProfile (CreateProfileRequest) returns (CreateProfileResponse);
+}
+
+message CreateProfileRequest {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  bool is_male = 4;
+  string birthday = 5;
+  float latitude = 6;
+  float longitude = 7;
+}
+
+message CreateProfileResponse {
+  bool success = 1;
+  string profile_id = 2;
+  string error_message = 3;
+}

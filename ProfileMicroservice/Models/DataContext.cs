@@ -3,7 +3,7 @@ using TinderAPI.Models.Entitys;
 
 namespace TinderAPI.Models;
 
-public class DataContext : DbContext
+public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Hobby> Hobbies { get; set; }
@@ -15,19 +15,10 @@ public class DataContext : DbContext
         modelBuilder.Entity<Profile>(m =>
         {
             m.HasKey(p => p.Id);
-            m.HasIndex(p => p.Email).IsUnique();
-            m.HasIndex(p => new { Latitube = p.Latitude, Longtube = p.Longitude});
+            m.HasIndex(p => new { p.Latitude, p.Longitude});
             m.HasIndex(p => new { p.BirthdayDate, p.IsMale });
             m.HasMany(p => p.Hobbies)
-                .WithMany(h => h.Profiles)
-                .UsingEntity(
-                    "ProfilesHobbies",
-                        l => l.HasOne(typeof(Profile)).WithMany().HasForeignKey("ProfileId")
-                            .HasPrincipalKey(nameof(Profile.Id)),
-                        r => r.HasOne(typeof(Hobby)).WithMany().HasForeignKey("HobbyId")
-                            .HasPrincipalKey(nameof(Hobby.Id)),
-                        j => j.HasKey("ProfileId", "HobbyId"))
-                .HasIndex("ProfileId", "HobbyId");
+                .WithMany(h => h.Profiles);
         });
         
         modelBuilder.Entity<Preferences>(m =>
@@ -47,7 +38,6 @@ public class DataContext : DbContext
             m.HasOne(p => p.Profile)
                 .WithMany(p => p.Photos)
                 .HasForeignKey(p => p.ProfileId);
-            m.HasIndex(p => new { p.ProfileId, p.SortOrder }).IsUnique();
         });
     }
 }
