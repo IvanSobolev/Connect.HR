@@ -30,26 +30,26 @@ public class SwipeController (ISwipeManager swipeManager) : ControllerBase
     [HttpGet]
     [Authorize]
     [Route("GetMatch/{page}/{pagesize}")]
-    public async Task<IActionResult> GetMatchAsync(int page, int pageSize)
+    public async Task<IActionResult> GetMatchAsync(int page, int pagesize)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (id == null)
         {
             return Unauthorized("Not Valid token");
         }
-        return Ok(await _swipeManager.GetMatchAsync(Guid.Parse(id), page, pageSize));
+        return Ok(await _swipeManager.GetMatchAsync(Guid.Parse(id), page, pagesize));
     }
     
     [HttpGet]
     [Authorize]
-    [Route("Get/{id}/{page}/{pagesize}")]
-    public async Task<IActionResult> GetByUserIdAsync(int page, int pageSize)
+    [Route("Get/{page}/{pagesize}")]
+    public async Task<IActionResult> GetByUserIdAsync(int page, int pagesize)
     {
         var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (id == null)
         {
             return Unauthorized("Not Valid token");
         }
-        return Ok(await _swipeManager.GetByUserIdAsync(Guid.Parse(id), page, pageSize));
+        return Ok(await _swipeManager.GetByUserIdAsync(Guid.Parse(id), page, pagesize));
     }
 }
