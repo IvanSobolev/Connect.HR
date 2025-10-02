@@ -20,7 +20,7 @@ public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository
             return new TokensDto();
         }
         await _refreshTokenRepository.DeleteAsync(refreshToken);
-        if (token.ExpiresAt > DateTime.UtcNow)
+        if (token.ExpiresAt < DateTime.UtcNow)
         {
             _logger.LogDebug("Token is expires for Refresh tokens");
             return new TokensDto();
@@ -46,7 +46,7 @@ public class RefreshTokenManager( IRefreshTokenRepository refreshTokenRepository
             return;
         }
         await _refreshTokenRepository.DeleteAsync(refreshToken);
-        if (token.ExpiresAt > DateTime.UtcNow)
+        if (token.ExpiresAt < DateTime.UtcNow)
         {
             _logger.LogDebug("Token is expires for logout all tokens");
             return;

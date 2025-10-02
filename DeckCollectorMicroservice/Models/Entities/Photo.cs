@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TinderAPI.Models.Entitys;
+namespace DeckCollectorMicroservice.Models.Entities;
 
 public class Photo
 {

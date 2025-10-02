@@ -1,14 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace DeckCollectorMicroservice.Models.DTOs;
 
-namespace TinderAPI.Models.Entitys;
-
-public class Photo
+public class PhotoDto
 {
     public long PhotoId { get; set; }
     public Guid ProfileId { get; set; }
-    [Url]
     public string PhotoUrl { get; set; }
     public bool IsMain { get; set; }
-    
-    public Profile Profile { get; set; }
 }

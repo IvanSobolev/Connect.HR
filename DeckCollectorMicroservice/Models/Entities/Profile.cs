@@ -1,15 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TinderAPI.Models.Entitys;
+namespace DeckCollectorMicroservice.Models.Entities;
 
 public class Profile
 {
     public Guid Id { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    [EmailAddress]
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime LastActive { get; set; } = DateTime.UtcNow;
+    public DateTime LastActive { get; set; }
     public bool IsMale { get; set; }
     public DateOnly BirthdayDate { get; set; }
     [MaxLength(500)]

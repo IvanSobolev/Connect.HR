@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
-using TinderAPI.Models.Entitys;
+﻿using DeckCollectorMicroservice.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace TinderAPI.Models;
+namespace DeckCollectorMicroservice.Models;
 
-public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
+public class ProfileDataContext(DbContextOptions<ProfileDataContext> options) : DbContext(options)
 {
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Hobby> Hobbies { get; set; }
     public DbSet<Preferences> Preferences { get; set; }
     public DbSet<Photo> Photos { get; set; }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Profile>(m =>
