@@ -5,14 +5,20 @@ services:
     image: redis
     container_name: redis
     ports:
-      - "6379:6379"
+      - "${DB_REDIS_OPEN_PORT}:6379"
+    volumes:
+      - redis_data:/data
+    environment:
+      - REDIS_PASSWORD=${DB_REDIS_PASSWORD}
+      - REDIS_APPENDONLY=yes
     restart: always
+  
   auth_db:
     image: postgres
     environment:
-    - POSTGRES_USER=${DB_AUTH_USER}
-    - POSTGRES_PASSWORD=${DB_AUTH_PASSWORD}
-    - POSTGRES_DB=${DB_AUTH_DB}
+      - POSTGRES_USER=${DB_AUTH_USER}
+      - POSTGRES_PASSWORD=${DB_AUTH_PASSWORD}
+      - POSTGRES_DB=${DB_AUTH_DB}
     volumes:
       - auth_db_data:/var/lib/postgresql/data
     ports:
@@ -21,7 +27,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U $DB_AUTH_USER -d $DB_AUTH_DB"]
       interval: 5s
       timeout: 5s
-      retries: 5 
+      retries: 5
   
   profile_db:
     image: postgis/postgis
@@ -38,7 +44,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-      
+  
   swipe_db:
     image: postgres
     environment:
@@ -57,8 +63,8 @@ services:
   
   auth_service:
     build:
-        context: .
-        dockerfile: AuthMicroservice/Dockerfile
+      context: .
+      dockerfile: AuthMicroservice/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DB_CONNECTION_STRING=Host=${DB_AUTH_HOST};Port=5432;Database=${DB_AUTH_DB};Username=${DB_AUTH_USER};Password=${DB_AUTH_PASSWORD}
@@ -71,7 +77,7 @@ services:
         condition: service_healthy
       profile_service:
         condition: service_started
-        
+  
   profile_service:
     build:
       context: .
@@ -86,7 +92,7 @@ services:
     depends_on:
       profile_db:
         condition: service_healthy
-        
+  
   match_service:
     build:
       context: .
@@ -100,8 +106,9 @@ services:
     depends_on:
       swipe_db:
         condition: service_healthy
-      
+
 volumes:
   auth_db_data:
   profile_db_data:
   swipe_db_data:
+  redis_data:
